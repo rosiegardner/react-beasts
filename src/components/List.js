@@ -20,35 +20,52 @@ class List extends Component {
     .catch(error => console.log(error))
   }
 
-  // draw card -> one at a time -> randomly 
-  // handleDrawClick = () => {
-  //   {this.state.list.map((beast, i) => {
-  //     <div>
-  //       {beast}
-  //       onClick={() => this.setstate({ expanded: i })}
-  //       {this.state.expanded === i && (
-  //         <Beast beast={beast} key={beast.id} />
-  //       )}
-  //       </div>
-  //   })}
-  // }
-
+  
   render () {
     return (
       <div>
-        {this.state.beasts.map((beast) => {
-          return (
+      {this.state.list.map((beast) => {
+        return(
           <Beast beast={beast} key={beast.id} />
           )
         })}
-      </div>
+      <button className='playCard' >
+        90218!
+      </button>
+    </div>
     );
   }
 }
 
 export default List;
 
-{/* {this.state.list.map((beast, i) => {
+// draw card -> one at a time -> randomly 
+// handleDrawClick = () => {
+//   {this.state.list.map((beast, i) => {
+//     <div>
+//       {beast}
+//       onClick={() => this.setstate({ expanded: i })}
+//       {this.state.expanded === i && (
+//         <Beast beast={beast} key={beast.id} />
+//       )}
+//       </div>
+//   })}
+// }
+
+
+//   render () {
+//     return (
+//       <div>
+//         {this.state.beasts.map((beast) => {
+//           return (
+//           <Beast beast={beast} key={beast.id} />
+//           )
+//         })}
+//       </div>
+//     );
+//   }
+// }
+/* {this.state.list.map((beast, i) => {
   <div>
     {beast.name}
     <button className='playCard' onClick={() => this.setState({ expanded: i })}>
@@ -58,10 +75,10 @@ export default List;
       <Beast key={beast.name} beast={beast} />
     )}
     </div>
-})} */}
-{/* <button className='playCard' onClick={this.handleDrawClick} >
+})} */
+/* <button className='playCard' onClick={this.handleDrawClick} >
   HIT ME!
-</button> */}
+</button> */
 
 // const BeastInfo = ({ beast }) => {
   //   return (

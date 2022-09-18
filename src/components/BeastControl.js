@@ -1,13 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
 import axios from 'axios';
-import Beast from './Beast';
+import BeastList from './BeastList';
 
 
-class BeastControl extends Component {
+class BeastControl extends React.Component {
+
   constructor(props) {
     super(props)
     this.state = {
-      beastList: [],
+      beastVisibleOnPage: false,
+      mainBeastList: [],
       beastDraw: null
     }
   }
@@ -16,36 +18,55 @@ class BeastControl extends Component {
     axios.get('http://localhost:3001/beasts')
     .then(response => {
       console.log(response)
-      this.setState({beastList: response.data})
+      this.setState({mainBeastList: response.data})
     })
     .catch(error => console.log(error))
   }
 
-  handleDraw = (id) => {
-    const beastDraw = this.state.list.filter(
+  handleChangingSelectedBeast = (id) => {
+    const beastDraw = this.state.mainBeastList.filter(
       (beast) => beast.id === id
     )[0];
     this.setState({ beastDraw: beastDraw });
   };
   
-  render () {
-    return (
-      <div>
-      {this.state.beastList.map((beast) => {
-        return(
-          <Beast beast={beast} key={beast.id} />
-          )
-        })}
-      <button className='playCard' >
-        HIT ME!
-      </button>
-    </div>
-    );
+  handleClick = () => {
+    this.setState(prevState => ({
+      beastVisibleOnPage: !prevState.beastVisibleOnPage
+    }));
   }
-}
+  
+  render () {
+    let currentlyVisibleBeast = null;
+    let buttonText = "Show Beast";
+    if (this.state.beastVisibleOnPage) {
+      currentlyVisibleBeast = <BeastList 
+      beastList={this.state.mainBeastList}
+      onBeastSelection={this.handleChangingSelectedBeast} />
+      buttonText = "return Home"
+    } 
+    return (
+      <React.Fragment>
+        {currentlyVisibleBeast}
+        <button onClick={this.handleClick}>{buttonText}</button>
+      </React.Fragment>
+      );
+    }
+  }
+  
+  export default BeastControl;
 
-export default BeastControl;
-
+  //   <div>
+  //   {this.state.beastList.map((beast) => {
+  //     return(
+  //       <Beast beast={beast} key={beast.id} />
+  //       )
+  //     })}
+  //   <button className='playCard' >
+  //     HIT ME!
+  //   </button>
+  // </div>
+  
 // draw card -> one at a time -> randomly 
 // handleDrawClick = () => {
 //   {this.state.list.map((beast, i) => {

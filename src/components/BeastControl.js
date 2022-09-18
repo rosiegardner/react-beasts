@@ -3,11 +3,12 @@ import axios from 'axios';
 import Beast from './Beast';
 
 
-class List extends Component {
+class BeastControl extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      list: []
+      beastList: [],
+      beastDraw: null
     }
   }
 
@@ -15,29 +16,35 @@ class List extends Component {
     axios.get('http://localhost:3001/beasts')
     .then(response => {
       console.log(response)
-      this.setState({list: response.data})
+      this.setState({beastList: response.data})
     })
     .catch(error => console.log(error))
   }
 
+  handleDraw = (id) => {
+    const beastDraw = this.state.list.filter(
+      (beast) => beast.id === id
+    )[0];
+    this.setState({ beastDraw: beastDraw });
+  };
   
   render () {
     return (
       <div>
-      {this.state.list.map((beast) => {
+      {this.state.beastList.map((beast) => {
         return(
           <Beast beast={beast} key={beast.id} />
           )
         })}
       <button className='playCard' >
-        90218!
+        HIT ME!
       </button>
     </div>
     );
   }
 }
 
-export default List;
+export default BeastControl;
 
 // draw card -> one at a time -> randomly 
 // handleDrawClick = () => {

@@ -1,10 +1,10 @@
 import React from 'react';
-import List from './List';
+import BeastControl from './BeastControl';
 
 function App() {
   return (
     <React.Fragment>
-      < List />
+      <BeastControl />
     </React.Fragment>
   );
 }

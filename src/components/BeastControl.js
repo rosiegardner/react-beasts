@@ -1,60 +1,90 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import BeastList from './BeastList';
 
+// axios.defaults.baseURL ='http://localhost:3001/beasts'
+// const url = 'http://localhost:3001/beasts'
 
-class BeastControl extends React.Component {
+function BeastControl() {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      beastVisibleOnPage: false,
-      mainBeastList: [],
-      beastDraw: null
-    }
-  }
+const [beastVisibleOnPage, setBeastVisibleOnPage] = useState(false);
+// const [error, setError] = useState("");
+// const [loading, setLoading] = useState(true);
+// const [response, setResponse] = useState(null);
+const [beastDraw, setBeastDraw] = useState(null);
+const [mainBeastList, setMainBeastList] = useState([]);
+const [post, setPost] = useState(null);
 
-  componentDidMount() {
-    axios.get('http://localhost:3001/beasts')
-    .then(response => {
-      console.log(response)
-      this.setState({mainBeastList: response.data})
-    })
-    .catch(error => console.log(error))
-  }
 
-  handleChangingSelectedBeast = (id) => {
-    const beastDraw = this.state.mainBeastList.filter(
-      (beast) => beast.id === id
-    )[0];
-    this.setState({ beastDraw: beastDraw });
+
+
+  // componentDidMount() {
+  //   axios.get('http://localhost:3001/beasts')
+  //   .then(response => {
+  //     console.log(response)
+  //     this.setState({mainBeastList: response.data})
+  //   })
+  //   .catch(error => console.log(error))
+  // }
+
+  // useEffect(() => {
+  //   const fetchBeast = () => {
+  //     axios
+  //     .get('http://localhost:3001/beasts')
+  //     .then(response => setResponse(response.data))
+  //     .catch(err => ErrorEvent(err))
+  //     .finally(() => setLoading(false))
+  //   }
+  //   fetchBeast();
+  // }, ['http://localhost:3001/beasts'])
+
+  // useEffect(() => {
+  //   axios
+  //   .get(url)
+  //   .then((response) => {
+  //     setPost(response.data)
+  //     console.log(response.data)
+  //   })
+  // }, [])
+
+  const handleChangingSelectedBeast = (id) => {
+    const beastDraw = mainBeastList.filter((beast) => beast.id === id)[0];
+      setBeastDraw(beastDraw);
   };
   
-  handleClick = () => {
-    this.setState(prevState => ({
-      beastVisibleOnPage: !prevState.beastVisibleOnPage
-    }));
-  }
-  
-  render () {
-    let currentlyVisibleBeast = null;
-    let buttonText = "Show Beast";
-    if (this.state.beastVisibleOnPage) {
-      currentlyVisibleBeast = <BeastList 
-      beastList={this.state.mainBeastList}
-      onBeastSelection={this.handleChangingSelectedBeast} />
-      buttonText = "return Home"
-    } 
-    return (
-      <React.Fragment>
-        {currentlyVisibleBeast}
-        <button onClick={this.handleClick}>{buttonText}</button>
-      </React.Fragment>
-      );
+  const handleClick = () => {
+    if (beastDraw != null) {
+      setBeastVisibleOnPage(false);
+      setMainBeastList(null);
+      setBeastDraw(null);
+    } else {
+      setBeastVisibleOnPage(!beastVisibleOnPage);
     }
   }
   
-  export default BeastControl;
+  
+    let currentlyVisibleBeast = null;
+    let buttonText = "Show Swamp Beasts";
+
+    if (beastVisibleOnPage) {
+      currentlyVisibleBeast = <BeastList 
+      beastList={mainBeastList}
+      onBeastSelection={handleChangingSelectedBeast} />
+      buttonText = "Get out me swamp"
+    } 
+    return (
+      
+      <React.Fragment>
+        {/* { response, error, loading } */}
+        {currentlyVisibleBeast}
+        
+        <button onClick={handleClick}>{buttonText}</button>
+      </React.Fragment>
+      );
+      
+}
+  
+export default BeastControl;
 
   //   <div>
   //   {this.state.beastList.map((beast) => {
@@ -68,71 +98,4 @@ class BeastControl extends React.Component {
   // </div>
   
 // draw card -> one at a time -> randomly 
-// handleDrawClick = () => {
-//   {this.state.list.map((beast, i) => {
-//     <div>
-//       {beast}
-//       onClick={() => this.setstate({ expanded: i })}
-//       {this.state.expanded === i && (
-//         <Beast beast={beast} key={beast.id} />
-//       )}
-//       </div>
-//   })}
-// }
 
-
-//   render () {
-//     return (
-//       <div>
-//         {this.state.beasts.map((beast) => {
-//           return (
-//           <Beast beast={beast} key={beast.id} />
-//           )
-//         })}
-//       </div>
-//     );
-//   }
-// }
-/* {this.state.list.map((beast, i) => {
-  <div>
-    {beast.name}
-    <button className='playCard' onClick={() => this.setState({ expanded: i })}>
-    HIT ME!
-    </button>
-    {this.state.expanded === i && (
-      <Beast key={beast.name} beast={beast} />
-    )}
-    </div>
-})} */
-/* <button className='playCard' onClick={this.handleDrawClick} >
-  HIT ME!
-</button> */
-
-// const BeastInfo = ({ beast }) => {
-  //   return (
-    //     <ul>
-    //       {Object.entries(beast).map(([key, value]) => (
-      //         <li key={key}>{ `${key}: ${value}` }</li>
-      //       ))}
-      //     </ul>
-      //   );
-// };
-
-
-
-
-// render () {
-//   return (
-//     <div>
-//       {this.state.list.map((beast) => {
-//         return(
-//           <Beast beast={beast} key={beast.id} />
-//         )
-//       })}
-//       <button className='playCard' onClick={this.handleDrawClick} >
-//         90218!
-//       </button>
-//     </div>
-//   );
-// }
-// }
